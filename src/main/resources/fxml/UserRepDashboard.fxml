@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="dashboard-root" xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.fieldsync.controllers.UserRepDashboardController">
+
+    <!-- Left Navigation Bar -->
+    <left>
+        <VBox styleClass="sidebar">
+            <Label text="FS" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6c5ce7;" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="🏠" styleClass="nav-icon-btn, nav-icon-btn-active" />
+            <Button text="⚽" styleClass="nav-icon-btn" onAction="#handleFieldsTab" />
+            <Button text="📅" styleClass="nav-icon-btn" onAction="#handleCalendarTab" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="🚪" styleClass="nav-icon-btn" onAction="#handleLogout" />
+        </VBox>
+    </left>
+
+    <!-- Main Bento Grid Workspace -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24" />
+                </padding>
+
+                <!-- Top Header Banner -->
+                <HBox alignment="CENTER_LEFT" styleClass="bento-card-hero">
+                    <VBox spacing="6">
+                        <Label text="TOURNAMENT CONTROL CENTER" styleClass="card-title" />
+                        <Label text="Manage venue bookings, team rosters, and match requests." styleClass="card-subtitle" />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button text="+ New Request" styleClass="btn-primary" onAction="#handleNewReservation" />
+                </HBox>
+
+                <!-- Bento Cards Layout Grid -->
+                <GridPane hgap="16" vgap="16">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="33.3" />
+                        <ColumnConstraints percentWidth="33.3" />
+                        <ColumnConstraints percentWidth="33.3" />
+                    </columnConstraints>
+
+                    <!-- KPI Card 1: Active Reservations -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="ACTIVE RESERVATIONS" styleClass="card-subtitle" />
+                        <Label fx:id="lblActiveReservations" text="0 Matches" styleClass="kpi-value" />
+                        <Label fx:id="lblNextMatch" text="No upcoming matches" styleClass="kpi-trend" />
+                    </VBox>
+
+                    <!-- KPI Card 2: Pending Approvals -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="PENDING APPROVALS" styleClass="card-subtitle" />
+                        <Label fx:id="lblPendingApprovals" text="0 Requests" styleClass="kpi-value" />
+                        <Label text="Awaiting Registrar review" style="-fx-text-fill: #fdcb6e; -fx-font-size: 12px;" />
+                    </VBox>
+
+                    <!-- KPI Card 3: Registered Players -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="2" GridPane.rowIndex="0">
+                        <Label text="REGISTERED PLAYERS" styleClass="card-subtitle" />
+                        <Label fx:id="lblRegisteredPlayers" text="0 Squad Members" styleClass="kpi-value" />
+                        <Label text="✓ Roster Verified" styleClass="kpi-trend" />
+                    </VBox>
+
+                    <!-- Venue Reservation Table -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.columnSpan="3" GridPane.rowIndex="1" spacing="12">
+                        <Label text="UPCOMING FIELD SLOTS" styleClass="card-title" />
+                        <TableView fx:id="tblReservations" prefHeight="220">
+                            <columns>
+                                <TableColumn fx:id="colFieldName" text="Field Name" prefWidth="200" />
+                                <TableColumn fx:id="colDate" text="Date" prefWidth="150" />
+                                <TableColumn fx:id="colTime" text="Time Slot" prefWidth="150" />
+                                <TableColumn fx:id="colStatus" text="Status" prefWidth="150" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </GridPane>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

@@ -1,0 +1,76 @@
+/* Dashboard Main Workspace */
+.dashboard-root {
+    -fx-background-color: #0d0e12;
+}
+
+/* Sidebar Navigation */
+.sidebar {
+    -fx-background-color: #16181e;
+    -fx-padding: 20 12;
+    -fx-spacing: 16;
+    -fx-alignment: top-center;
+    -fx-border-color: rgba(255, 255, 255, 0.05);
+    -fx-border-width: 0 1 0 0;
+}
+
+.nav-icon-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #808b9e;
+    -fx-font-size: 16px;
+    -fx-padding: 12;
+    -fx-background-radius: 12px;
+    -fx-cursor: hand;
+}
+
+.nav-icon-btn:hover {
+    -fx-background-color: rgba(255, 255, 255, 0.08);
+    -fx-text-fill: #ffffff;
+}
+
+.nav-icon-btn-active {
+    -fx-background-color: #6c5ce7;
+    -fx-text-fill: #ffffff;
+    -fx-effect: dropshadow(three-pass-box, rgba(108, 92, 231, 0.4), 12, 0, 0, 4);
+}
+
+/* Bento Cards */
+.bento-card {
+    -fx-background-color: #171920;
+    -fx-background-radius: 16px;
+    -fx-border-color: rgba(255, 255, 255, 0.06);
+    -fx-border-radius: 16px;
+    -fx-border-width: 1px;
+    -fx-padding: 20;
+}
+
+.bento-card-hero {
+    -fx-background-color: linear-gradient(to bottom right, #24193b, #15161c);
+    -fx-background-radius: 20px;
+    -fx-border-color: rgba(162, 155, 254, 0.2);
+    -fx-border-radius: 20px;
+    -fx-padding: 24;
+}
+
+/* Typography Tokens */
+.card-title {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.card-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #808b9e;
+}
+
+.kpi-value {
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #ffffff;
+}
+
+.kpi-trend {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #00b894;
+}

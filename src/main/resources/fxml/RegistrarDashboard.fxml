@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane styleClass="dashboard-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.fieldsync.controllers.RegistrarDashboardController">
+
+    <!-- Left Sidebar -->
+    <left>
+        <VBox styleClass="sidebar">
+            <Label text="REG" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #a29bfe;" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="📊" styleClass="nav-icon-btn, nav-icon-btn-active" />
+            <Button text="📋" styleClass="nav-icon-btn" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button text="🚪" onAction="#handleLogout" styleClass="nav-icon-btn" />
+        </VBox>
+    </left>
+
+    <!-- Main Workspace -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;">
+            <VBox spacing="20">
+                <padding>
+                    <Insets top="24" right="24" bottom="24" left="24" />
+                </padding>
+
+                <Label text="CAMPUS REGISTRAR ANALYTICS" styleClass="card-title" style="-fx-font-size: 22px;" />
+
+                <!-- Bento Grid -->
+                <GridPane hgap="16" vgap="16">
+                    <columnConstraints>
+                        <ColumnConstraints percentWidth="50" />
+                        <ColumnConstraints percentWidth="50" />
+                    </columnConstraints>
+
+                    <!-- Chart Widget 1: Usage Trend -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                        <Label text="WEEKLY FIELD USAGE" styleClass="card-title" />
+                        <BarChart fx:id="chartUsage" prefHeight="240">
+                            <xAxis><CategoryAxis label="Day" /></xAxis>
+                            <yAxis><NumberAxis label="Hours Reserved" /></yAxis>
+                        </BarChart>
+                    </VBox>
+
+                    <!-- Chart Widget 2: Department Distribution -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                        <Label text="DEPARTMENT ALLOCATION" styleClass="card-title" />
+                        <PieChart fx:id="chartDepartment" prefHeight="240" />
+                    </VBox>
+
+                    <!-- Approvals Queue -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" spacing="12">
+                        <Label text="PENDING RESERVATION APPROVALS" styleClass="card-title" />
+                        <TableView fx:id="tblApprovals" prefHeight="200">
+                            <columns>
+                                <TableColumn text="Department / Team" prefWidth="220" />
+                                <TableColumn text="Field" prefWidth="180" />
+                                <TableColumn text="Date &amp; Time" prefWidth="200" />
+                                <TableColumn text="Action" prefWidth="180" />
+                            </columns>
+                        </TableView>
+                    </VBox>
+                </GridPane>
+            </VBox>
+        </ScrollPane>
+    </center>
+</BorderPane>

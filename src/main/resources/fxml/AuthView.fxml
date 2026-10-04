@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<StackPane styleClass="auth-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="com.fieldsync.controllers.AuthController">
+
+    <HBox alignment="CENTER" maxHeight="600.0" maxWidth="900.0" styleClass="auth-card">
+        
+        <!-- Left Panel: FutbalMania Dynamic Hero Banner -->
+        <VBox alignment="CENTER" prefWidth="420.0" spacing="20" styleClass="hero-panel">
+            <padding>
+                <Insets bottom="40" left="40" right="40" top="40" />
+            </padding>
+            <Label text="FIELDSYNC" styleClass="hero-title" />
+            <Label fx:id="lblHeroSubtitle" text="CAMPUS FIELD RESERVATION PLATFORM" styleClass="hero-subtitle" textAlignment="CENTER" wrapText="true" />
+        </VBox>
+
+        <!-- Right Panel: Interactive Form -->
+        <VBox alignment="CENTER_LEFT" prefWidth="480.0" spacing="18">
+            <padding>
+                <Insets bottom="40" left="40" right="40" top="40" />
+            </padding>
+
+            <!-- Role Selector Tabs -->
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button fx:id="btnRoleStudent" text="Student Representative" onAction="#handleRoleStudent" styleClass="role-tab, role-tab-active" />
+                <Button fx:id="btnRoleRegistrar" text="Registrar" onAction="#handleRoleRegistrar" styleClass="role-tab" />
+            </HBox>
+
+            <Label fx:id="lblFormTitle" text="ONLINE MEMBER LOGIN" styleClass="form-title" />
+
+            <!-- Input Fields -->
+            <VBox spacing="12">
+                <TextField fx:id="txtEmail" promptText="Email Address" styleClass="input-field" />
+                <PasswordField fx:id="txtPassword" promptText="Password" styleClass="input-field" />
+            </VBox>
+
+            <!-- Status / Feedback Label -->
+            <Label fx:id="lblStatus" textFill="#ff5555" wrapText="true" />
+
+            <!-- Primary Action Button -->
+            <Button fx:id="btnSubmit" maxWidth="Infinity" onAction="#handleSubmit" text="LOGIN" styleClass="btn-primary" />
+
+            <!-- Sub-actions -->
+            <HBox alignment="CENTER" spacing="5">
+                <Label text="Don't have an account?" textFill="#a0a5b5" />
+                <Hyperlink fx:id="linkToggleMode" text="Register here!" onAction="#handleToggleMode" textFill="#a29bfe" />
+            </HBox>
+        </VBox>
+    </HBox>
+</StackPane>
