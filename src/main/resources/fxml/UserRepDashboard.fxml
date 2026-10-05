@@ -45,7 +45,7 @@
                         <Label text="Manage venue bookings, team rosters, and match requests." styleClass="card-subtitle" />
                     </VBox>
                     <Region HBox.hgrow="ALWAYS" />
-                    <Button text="+ New Request" styleClass="btn-primary" onAction="#handleNewReservation" />
+                    <!-- <Button text="+ New Request" styleClass="btn-primary" onAction="#handleNewReservation" /> -->
                 </HBox>
 
                 <!-- Bento Cards Layout Grid -->

@@ -59,36 +59,6 @@ public class AuthController {
         lblStatus.setText("");
     }
 
-    // @FXML
-    // private void handleSubmit() {
-    // String email = txtEmail.getText().trim();
-    // String password = txtPassword.getText().trim();
-
-    // if (email.isEmpty() || password.isEmpty()) {
-    // lblStatus.setText("Please enter both email and password.");
-    // return;
-    // }
-
-    // if (isLoginMode) {
-    // User user = userDAO.authenticate(email, password);
-    // if (user != null) {
-    // UserSession.login(user);
-    // // Route based on role
-    // if (user.isRegistrar()) {
-    // SceneManager.switchScene(AppConfig.VIEW_REGISTRAR_DASHBOARD,
-    // AppConfig.STYLE_DASHBOARD);
-    // } else {
-    // SceneManager.switchScene(AppConfig.VIEW_STUDENT_DASHBOARD,
-    // AppConfig.STYLE_DASHBOARD);
-    // }
-    // } else {
-    // lblStatus.setText("Invalid credentials or account does not exist.");
-    // }
-    // } else {
-    // lblStatus.setText("Registration workflow connected to DB!");
-    // }
-    // }
-
     @FXML
     private void handleSubmit() {
         String email = txtEmail.getText().trim();

@@ -1,12 +1,3 @@
-// package com.fieldsync;
-
-// public class App {
-//     public static void main(String[] args) {
-//         Main.main(args);
-//     }
-// }
-
-
 package com.fieldsync;
 
 import com.fieldsync.config.AppConfig;
