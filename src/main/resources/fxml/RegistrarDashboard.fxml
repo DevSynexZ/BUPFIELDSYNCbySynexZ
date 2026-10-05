@@ -28,39 +28,40 @@
                     <Insets top="24" right="24" bottom="24" left="24" />
                 </padding>
 
-                <Label text="CAMPUS REGISTRAR ANALYTICS" styleClass="card-title" style="-fx-font-size: 22px;" />
+                <Label text="CAMPUS REGISTRAR DASHBOARD" styleClass="card-title" style="-fx-font-size: 22px;" />
 
-                <!-- Bento Grid -->
                 <GridPane hgap="16" vgap="16">
                     <columnConstraints>
                         <ColumnConstraints percentWidth="50" />
                         <ColumnConstraints percentWidth="50" />
                     </columnConstraints>
 
-                    <!-- Chart Widget 1: Usage Trend -->
+                    <!-- Usage Trend Chart -->
                     <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
                         <Label text="WEEKLY FIELD USAGE" styleClass="card-title" />
-                        <BarChart fx:id="chartUsage" prefHeight="240">
+                        <BarChart fx:id="chartUsage" prefHeight="220">
                             <xAxis><CategoryAxis label="Day" /></xAxis>
                             <yAxis><NumberAxis label="Hours Reserved" /></yAxis>
                         </BarChart>
                     </VBox>
 
-                    <!-- Chart Widget 2: Department Distribution -->
+                    <!-- Department Distribution Chart -->
                     <VBox styleClass="bento-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
                         <Label text="DEPARTMENT ALLOCATION" styleClass="card-title" />
-                        <PieChart fx:id="chartDepartment" prefHeight="240" />
+                        <PieChart fx:id="chartDepartment" prefHeight="220" />
                     </VBox>
 
-                    <!-- Approvals Queue -->
+                    <!-- Pending Approvals Queue -->
                     <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" spacing="12">
                         <Label text="PENDING RESERVATION APPROVALS" styleClass="card-title" />
-                        <TableView fx:id="tblApprovals" prefHeight="200">
+                        <TableView fx:id="tblApprovals" prefHeight="280">
                             <columns>
-                                <TableColumn text="Department / Team" prefWidth="220" />
-                                <TableColumn text="Field" prefWidth="180" />
-                                <TableColumn text="Date &amp; Time" prefWidth="200" />
-                                <TableColumn text="Action" prefWidth="180" />
+                                <TableColumn fx:id="colApplicantEmail" text="Representative Email" prefWidth="180" />
+                                <TableColumn fx:id="colFullName" text="Full Name" prefWidth="140" />
+                                <TableColumn fx:id="colDepartment" text="Department" prefWidth="120" />
+                                <TableColumn fx:id="colDateTime" text="Time Slot" prefWidth="200" />
+                                <TableColumn fx:id="colPurpose" text="Purpose" prefWidth="150" />
+                                <TableColumn fx:id="colActions" text="Action" prefWidth="160" />
                             </columns>
                         </TableView>
                     </VBox>

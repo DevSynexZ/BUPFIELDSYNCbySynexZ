@@ -27,9 +27,6 @@ public class NotificationDAO {
         }
     }
 
-    /**
-     * Fetches unread notifications for a user.
-     */
     public List<Notification> getUnreadNotificationsByUser(int userId) {
         List<Notification> list = new ArrayList<>();
         String sql = "SELECT * FROM notifications WHERE user_id = ? AND is_read = FALSE ORDER BY created_at DESC";
