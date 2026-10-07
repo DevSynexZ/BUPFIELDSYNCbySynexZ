@@ -13,18 +13,30 @@ import javafx.scene.image.ImageView;
 
 public class AuthController {
 
-    @FXML private Button btnRoleStudent;
-    @FXML private Button btnRoleRegistrar;
-    @FXML private Label lblHeroSubtitle;
-    @FXML private Label lblFormTitle;
-    @FXML private TextField txtFullName;
-    @FXML private TextField txtDepartment;
-    @FXML private TextField txtEmail;
-    @FXML private PasswordField txtPassword;
-    @FXML private Label lblStatus;
-    @FXML private Button btnSubmit;
-    @FXML private Hyperlink linkToggleMode;
-    @FXML private ImageView imgLeftBanner;
+    @FXML
+    private Button btnRoleStudent;
+    @FXML
+    private Button btnRoleRegistrar;
+    @FXML
+    private Label lblHeroSubtitle;
+    @FXML
+    private Label lblFormTitle;
+    @FXML
+    private TextField txtFullName;
+    @FXML
+    private TextField txtDepartment;
+    @FXML
+    private TextField txtEmail;
+    @FXML
+    private PasswordField txtPassword;
+    @FXML
+    private Label lblStatus;
+    @FXML
+    private Button btnSubmit;
+    @FXML
+    private Hyperlink linkToggleMode;
+    @FXML
+    private ImageView imgLeftBanner;
 
     private final UserDAO userDAO = new UserDAO();
     private boolean isRegistrarRole = false;
@@ -80,33 +92,47 @@ public class AuthController {
         }
     }
 
-    private void handleLogin(String email, String password) {
-        try {
-            System.out.println("[Auth] Attempting login for: " + email);
-            User user = userDAO.authenticate(email, password);
+ private void handleLogin(String email, String password) {
+    try {
+        System.out.println("[Auth] Attempting login for: " + email);
+        User user = userDAO.authenticate(email, password);
 
-            if (user != null) {
-                UserSession.login(user);
-                System.out.println("[Auth] Authenticated Role: " + user.getRole());
-
-                if (user.isRegistrar()) {
-                    System.out.println("[Auth] Routing to Registrar Dashboard...");
-                    SceneManager.switchScene(AppConfig.VIEW_REGISTRAR_DASHBOARD, AppConfig.STYLE_DASHBOARD);
-                } else {
-                    System.out.println("[Auth] Routing to Student Rep Dashboard...");
-                    SceneManager.switchScene(AppConfig.VIEW_STUDENT_DASHBOARD, AppConfig.STYLE_DASHBOARD);
-                }
-            } else {
+        if (user != null) {
+            // Check if the user's actual role matches the selected tab role
+            if (isRegistrarRole && !user.isRegistrar()) {
                 lblStatus.setStyle("-fx-text-fill: #ef4444;");
-                lblStatus.setText("Invalid credentials or database connection failed.");
+                lblStatus.setText("Access Denied: This account is not a Registrar.");
+                return;
             }
-        } catch (Exception e) {
-            System.err.println("[Auth] Critical error during login:");
-            e.printStackTrace();
+
+            if (!isRegistrarRole && user.isRegistrar()) {
+                lblStatus.setStyle("-fx-text-fill: #ef4444;");
+                lblStatus.setText("Access Denied: Registrars must log in under the Registrar tab.");
+                return;
+            }
+
+            // Proceed with login if role matches selection
+            UserSession.login(user);
+            System.out.println("[Auth] Authenticated Role: " + user.getRole());
+
+            if (user.isRegistrar()) {
+                System.out.println("[Auth] Routing to Registrar Dashboard...");
+                SceneManager.switchScene(AppConfig.VIEW_REGISTRAR_DASHBOARD, AppConfig.STYLE_DASHBOARD);
+            } else {
+                System.out.println("[Auth] Routing to Student Rep Dashboard...");
+                SceneManager.switchScene(AppConfig.VIEW_STUDENT_DASHBOARD, AppConfig.STYLE_DASHBOARD);
+            }
+        } else {
             lblStatus.setStyle("-fx-text-fill: #ef4444;");
-            lblStatus.setText("An unexpected error occurred during login.");
+            lblStatus.setText("Invalid credentials or database connection failed.");
         }
+    } catch (Exception e) {
+        System.err.println("[Auth] Critical error during login:");
+        e.printStackTrace();
+        lblStatus.setStyle("-fx-text-fill: #ef4444;");
+        lblStatus.setText("An unexpected error occurred during login.");
     }
+}
 
     private void handleRegistration(String email, String password) {
         try {
@@ -182,24 +208,14 @@ public class AuthController {
         }
     }
 
-    // private void setBannerImage(String resourcePath) {
-    //     try {
-    //         if (getClass().getResource(resourcePath) != null) {
-    //             imgLeftBanner.setImage(new Image(getClass().getResourceAsStream(resourcePath)));
-    //         }
-    //     } catch (Exception e) {
-    //         System.err.println("[Auth] Could not load image: " + resourcePath);
-    //     }
-    // }
-
     private void setBannerImage(String resourcePath) {
-    try {
-        if (getClass().getResource(resourcePath) != null) {
-            Image img = new Image(getClass().getResourceAsStream(resourcePath));
-            imgLeftBanner.setImage(img);
+        try {
+            if (getClass().getResource(resourcePath) != null) {
+                Image img = new Image(getClass().getResourceAsStream(resourcePath));
+                imgLeftBanner.setImage(img);
+            }
+        } catch (Exception e) {
+            System.err.println("[Auth] Could not load image: " + resourcePath);
         }
-    } catch (Exception e) {
-        System.err.println("[Auth] Could not load image: " + resourcePath);
     }
-}
 }
