@@ -1,3 +1,4 @@
+
 package com.fieldsync.dao;
 
 import com.fieldsync.config.DatabaseConnection;
@@ -9,12 +10,9 @@ import java.util.List;
 
 public class FieldDAO {
 
-    /**
-     * Fetches all active fields available for booking.
-     */
     public List<Field> getAllActiveFields() {
         List<Field> fields = new ArrayList<>();
-        String sql = "SELECT * FROM fields WHERE is_active = TRUE ORDER BY field_id ASC";
+        String sql = "SELECT * FROM fields WHERE UPPER(status) = 'AVAILABLE' ORDER BY field_id ASC";
 
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -50,11 +48,14 @@ public class FieldDAO {
     }
 
     private Field extractFieldFromResultSet(ResultSet rs) throws SQLException {
+        String status = rs.getString("status");
+        boolean isActive = status != null && status.equalsIgnoreCase("AVAILABLE");
+
         return new Field(
                 rs.getInt("field_id"),
                 rs.getString("field_name"),
                 rs.getString("location"),
-                rs.getBoolean("is_active")
+                isActive
         );
     }
 }

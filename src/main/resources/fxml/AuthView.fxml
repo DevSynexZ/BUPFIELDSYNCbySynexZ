@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
 
 <StackPane styleClass="auth-root" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
@@ -9,14 +10,31 @@
 
     <HBox alignment="CENTER" maxHeight="600.0" maxWidth="900.0" styleClass="auth-card">
         
-        <!-- Left Panel: FutbalMania Dynamic Hero Banner -->
-        <VBox alignment="CENTER" prefWidth="420.0" spacing="20" styleClass="hero-panel">
-            <padding>
-                <Insets bottom="40" left="40" right="40" top="40" />
-            </padding>
-            <Label text="FIELDSYNC" styleClass="hero-title" />
-            <Label fx:id="lblHeroSubtitle" text="CAMPUS FIELD RESERVATION PLATFORM" styleClass="hero-subtitle" textAlignment="CENTER" wrapText="true" />
-        </VBox>
+        <!-- Left Panel: Full-Bleed Dynamic Image Banner with Text Overlay -->
+        <StackPane prefWidth="420.0" prefHeight="600.0" styleClass="hero-panel">
+            
+            <!-- Image fills the entire panel height and width -->
+            <ImageView fx:id="imgLeftBanner" 
+                       fitWidth="420.0" 
+                       fitHeight="600.0" 
+                       preserveRatio="false" />
+
+            <!-- Optional dark gradient tint overlay so text remains readable -->
+            <Region style="-fx-background-color: rgba(15, 12, 29, 0.55);" />
+
+            <!-- Overlay Content Container -->
+            <VBox alignment="CENTER" spacing="15">
+                <padding>
+                    <Insets bottom="40" left="40" right="40" top="40" />
+                </padding>
+                <Label text="FIELDSYNC" styleClass="hero-title" />
+                <Label fx:id="lblHeroSubtitle" 
+                       text="CAMPUS FIELD RESERVATION PLATFORM" 
+                       styleClass="hero-subtitle" 
+                       textAlignment="CENTER" 
+                       wrapText="true" />
+            </VBox>
+        </StackPane>
 
         <!-- Right Panel: Interactive Form -->
         <VBox alignment="CENTER_LEFT" prefWidth="480.0" spacing="18">
@@ -34,6 +52,8 @@
 
             <!-- Input Fields -->
             <VBox spacing="12">
+                <TextField fx:id="txtFullName" promptText="Representative Name" styleClass="input-field" managed="false" visible="false" />
+                <TextField fx:id="txtDepartment" promptText="Department (e.g., CSE, BBA)" styleClass="input-field" managed="false" visible="false" />
                 <TextField fx:id="txtEmail" promptText="Email Address" styleClass="input-field" />
                 <PasswordField fx:id="txtPassword" promptText="Password" styleClass="input-field" />
             </VBox>
