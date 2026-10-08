@@ -21,16 +21,25 @@ import java.util.List;
 
 public class RegistrarDashboardController {
 
-    @FXML private TableView<PendingApprovalDTO> tblApprovals;
-    @FXML private TableColumn<PendingApprovalDTO, String> colApplicantEmail;
-    @FXML private TableColumn<PendingApprovalDTO, String> colFullName;
-    @FXML private TableColumn<PendingApprovalDTO, String> colDepartment;
-    @FXML private TableColumn<PendingApprovalDTO, String> colDateTime;
-    @FXML private TableColumn<PendingApprovalDTO, String> colPurpose;
-    @FXML private TableColumn<PendingApprovalDTO, Void> colActions;
+    @FXML
+    private TableView<PendingApprovalDTO> tblApprovals;
+    @FXML
+    private TableColumn<PendingApprovalDTO, String> colApplicantEmail;
+    @FXML
+    private TableColumn<PendingApprovalDTO, String> colFullName;
+    @FXML
+    private TableColumn<PendingApprovalDTO, String> colDepartment;
+    @FXML
+    private TableColumn<PendingApprovalDTO, String> colDateTime;
+    @FXML
+    private TableColumn<PendingApprovalDTO, String> colPurpose;
+    @FXML
+    private TableColumn<PendingApprovalDTO, Void> colActions;
 
-    @FXML private BarChart<String, Number> chartUsage;
-    @FXML private PieChart chartDepartment;
+    @FXML
+    private BarChart<String, Number> chartUsage;
+    @FXML
+    private PieChart chartDepartment;
 
     private final ReservationDAO reservationDAO = new ReservationDAO();
 
@@ -53,8 +62,10 @@ public class RegistrarDashboardController {
             private final HBox actionBox = new HBox(8, btnApprove, btnReject);
 
             {
-                btnApprove.setStyle("-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
-                btnReject.setStyle("-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+                btnApprove.setStyle(
+                        "-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
+                btnReject.setStyle(
+                        "-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-font-weight: bold; -fx-cursor: hand;");
                 actionBox.setAlignment(Pos.CENTER);
 
                 btnApprove.setOnAction(event -> {
@@ -93,11 +104,10 @@ public class RegistrarDashboardController {
 
     private void handleDecision(PendingApprovalDTO dto, String status) {
         boolean success = reservationDAO.updateReservationStatus(
-            dto.getReservationId(),
-            dto.getApplicantId(),
-            status,
-            dto.getFieldName()
-        );
+                dto.getReservationId(),
+                dto.getApplicantId(),
+                status,
+                dto.getFieldName());
 
         if (success) {
             System.out.println("[Registrar] Reservation " + dto.getReservationId() + " marked as " + status);

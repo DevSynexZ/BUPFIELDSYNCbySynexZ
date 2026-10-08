@@ -43,7 +43,8 @@
                 <!-- Top Header Banner -->
                 <HBox alignment="CENTER_LEFT" styleClass="bento-card-hero">
                     <VBox spacing="6">
-                        <Label text="TOURNAMENT CONTROL CENTER" styleClass="card-title" />
+                        <!-- <Label text="TOURNAMENT CONTROL CENTER" styleClass="card-title" /> -->
+                        <Label fx:id="lblWelcome" text="WELCOME" styleClass="card-title" />
                         <Label text="Manage venue bookings, team rosters, and match requests."
                             styleClass="card-subtitle" />
                     </VBox>

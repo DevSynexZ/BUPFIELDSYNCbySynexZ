@@ -23,6 +23,9 @@ import java.util.List;
 public class UserRepDashboardController {
 
     @FXML
+    private Label lblWelcome;
+
+    @FXML
     private Label lblActiveReservations;
     @FXML
     private Label lblNextMatch;
@@ -103,6 +106,8 @@ public class UserRepDashboardController {
         User currentUser = UserSession.getLoggedInUser();
         if (currentUser == null)
             return;
+
+        lblWelcome.setText("WELCOME, " + currentUser.getName().toUpperCase());
 
         int userId = currentUser.getId();
 
