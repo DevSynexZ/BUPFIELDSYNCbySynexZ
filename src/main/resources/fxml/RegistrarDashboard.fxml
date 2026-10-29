@@ -28,7 +28,7 @@
                     <Insets top="24" right="24" bottom="24" left="24" />
                 </padding>
 
-                <Label text="CAMPUS REGISTRAR DASHBOARD" styleClass="card-title" style="-fx-font-size: 22px;" />
+                <Label text="Field REGISTRAR DASHBOARD" styleClass="card-title" style="-fx-font-size: 22px;" />
 
                 <GridPane hgap="16" vgap="16">
                     <columnConstraints>
