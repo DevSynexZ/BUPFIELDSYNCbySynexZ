@@ -48,7 +48,7 @@
                 <Button fx:id="btnRoleRegistrar" text="Registrar" onAction="#handleRoleRegistrar" styleClass="role-tab" />
             </HBox>
 
-            <Label fx:id="lblFormTitle" text="ONLINE MEMBER LOGIN" styleClass="form-title" />
+            <Label fx:id="lblFormTitle" text="MEMBER LOGIN" styleClass="form-title" />
 
             <!-- Input Fields -->
             <VBox spacing="12">
