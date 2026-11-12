@@ -16,8 +16,6 @@ public class App extends Application {
         SceneManager.switchScene(AppConfig.VIEW_AUTH, AppConfig.STYLE_AUTH);
     }
 
-
-
     public static void main(String[] args) {
         launch(args);
     }

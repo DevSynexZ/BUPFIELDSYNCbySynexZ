@@ -15,8 +15,8 @@ public class FieldDAO {
         String sql = "SELECT * FROM fields WHERE UPPER(status) = 'AVAILABLE' ORDER BY field_id ASC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 fields.add(extractFieldFromResultSet(rs));
@@ -33,7 +33,7 @@ public class FieldDAO {
     public Field getFieldById(int fieldId) {
         String sql = "SELECT * FROM fields WHERE field_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, fieldId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -55,7 +55,6 @@ public class FieldDAO {
                 rs.getInt("field_id"),
                 rs.getString("field_name"),
                 rs.getString("location"),
-                isActive
-        );
+                isActive);
     }
 }

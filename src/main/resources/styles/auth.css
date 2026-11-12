@@ -6,7 +6,7 @@
 .auth-card {
     -fx-background-color: #1c1e24;
     -fx-background-radius: 20px;
-    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.5), 20, 0, 0, 10);
+    -fx-effect: dropshadow(three-pass-box, rgba(0, 0, 0, 0.5), 20, 0, 0, 10);
 }
 
 /* Left Hero Banner Styling */

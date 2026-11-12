@@ -42,11 +42,13 @@ public class SceneManager {
             // Apply Global Styles and Scene Specific Stylesheet
             scene.getStylesheets().clear();
             URL mainCss = SceneManager.class.getResource(AppConfig.STYLE_MAIN);
-            if (mainCss != null) scene.getStylesheets().add(mainCss.toExternalForm());
+            if (mainCss != null)
+                scene.getStylesheets().add(mainCss.toExternalForm());
 
             if (specificStylePath != null) {
                 URL specificCss = SceneManager.class.getResource(specificStylePath);
-                if (specificCss != null) scene.getStylesheets().add(specificCss.toExternalForm());
+                if (specificCss != null)
+                    scene.getStylesheets().add(specificCss.toExternalForm());
             }
 
             // Smooth Fade Transition

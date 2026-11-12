@@ -17,9 +17,6 @@ public class Field {
         return fieldId;
     }
 
-    
-
-
     public String getFieldName() {
         return fieldName;
     }

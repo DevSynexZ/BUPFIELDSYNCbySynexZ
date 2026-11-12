@@ -10,7 +10,7 @@ public class TestConnection {
         System.out.println("[TEST 1] Initiating PostgreSQL Connection...");
 
         try (Connection conn = DatabaseConnection.getConnection();
-             Statement stmt = conn.createStatement()) {
+                Statement stmt = conn.createStatement()) {
 
             if (conn != null && !conn.isClosed()) {
                 System.out.println("[SUCCESS] Database Connection Established!");

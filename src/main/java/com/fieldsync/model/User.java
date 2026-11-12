@@ -74,13 +74,15 @@ public class User {
     }
 
     public boolean isRegistrar() {
-        if (this.role == null) return false;
+        if (this.role == null)
+            return false;
         String normalized = this.role.toUpperCase().trim();
         return normalized.contains("REGISTRAR");
     }
 
     public boolean isStudentRep() {
-        if (this.role == null) return false;
+        if (this.role == null)
+            return false;
         String normalized = this.role.toUpperCase().trim();
         return normalized.contains("STUDENT") || normalized.contains("REP");
     }

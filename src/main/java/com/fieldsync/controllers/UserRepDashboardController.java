@@ -112,13 +112,15 @@ public class UserRepDashboardController {
         int userId = currentUser.getId();
 
         int activeCount = reservationDAO.getActiveReservationsCount(userId);
-        lblActiveReservations.setText(activeCount + (activeCount == 1 ? " Match" : " Matches"));
+        LocalDateTime nextMatch = reservationDAO.getNextMatchTime(userId); // Fixed method call here
 
-        LocalDateTime nextMatch = reservationDAO.getNextMatchTime(userId);
-        if (nextMatch != null) {
+        if (activeCount > 0 && nextMatch != null) {
+            lblActiveReservations.setText(activeCount + (activeCount == 1 ? " Match" : " Matches"));
+
             long hours = Duration.between(LocalDateTime.now(), nextMatch).toHours();
             lblNextMatch.setText("↑ Next match in " + Math.max(1, hours) + " hours");
         } else {
+            lblActiveReservations.setText("0 Matches");
             lblNextMatch.setText("No upcoming matches scheduled");
         }
 
@@ -149,7 +151,8 @@ public class UserRepDashboardController {
 
     @FXML
     private void handleCalendarTab(ActionEvent event) {
-        System.out.println("Navigating to Calendar tab...");
+        // Switch center workspace to Upcoming Matches view
+        SceneManager.switchScene(AppConfig.VIEW_UPCOMING_MATCHES, AppConfig.STYLE_DASHBOARD);
     }
 
     @FXML

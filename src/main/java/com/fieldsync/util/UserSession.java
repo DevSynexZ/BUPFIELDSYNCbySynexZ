@@ -6,19 +6,19 @@ public class UserSession {
     private static UserSession instance;
     private User currentUser;
 
-    private UserSession(User user){
+    private UserSession(User user) {
         this.currentUser = user;
     }
 
-    public static void login(User user){
+    public static void login(User user) {
         instance = new UserSession(user);
     }
 
-    public static UserSession getInstance(){
+    public static UserSession getInstance() {
         return instance;
     }
 
-    public User getCurrentUser(){
+    public User getCurrentUser() {
         return currentUser;
     }
 
@@ -30,11 +30,11 @@ public class UserSession {
         return getLoggedInUser();
     }
 
-    public static void logout(){
+    public static void logout() {
         instance = null;
     }
 
-    public static boolean isLoggedIn(){
+    public static boolean isLoggedIn() {
         return instance != null;
     }
 }

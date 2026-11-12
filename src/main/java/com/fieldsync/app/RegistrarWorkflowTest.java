@@ -33,7 +33,8 @@ public class RegistrarWorkflowTest {
         }
 
         Reservation targetReservation = pendingBookings.get(0);
-        System.out.println("\n[1] Found Pending Reservation ID: " + targetReservation.getId() + " | Status: " + targetReservation.getStatus());
+        System.out.println("\n[1] Found Pending Reservation ID: " + targetReservation.getId() + " | Status: "
+                + targetReservation.getStatus());
 
         // 2. Registrar Approves the Reservation
         System.out.println("\n[2] Registrar approving reservation...");
@@ -42,8 +43,9 @@ public class RegistrarWorkflowTest {
 
         // 3. Send Notification to Student about Approval
         if (approved) {
-            notificationDAO.createNotification(student.getId(), 
-                "Your reservation for Field #" + targetReservation.getFieldId() + " has been APPROVED by the Registrar.");
+            notificationDAO.createNotification(student.getId(),
+                    "Your reservation for Field #" + targetReservation.getFieldId()
+                            + " has been APPROVED by the Registrar.");
         }
 
         // 4. Verify Student's Unread Notifications

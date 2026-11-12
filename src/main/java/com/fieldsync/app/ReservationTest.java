@@ -26,7 +26,8 @@ public class ReservationTest {
             return;
         }
         UserSession.login(student);
-        System.out.println("\n[VALIDATION 1] UserSession active for: " + UserSession.getInstance().getCurrentUser().getName());
+        System.out.println(
+                "\n[VALIDATION 1] UserSession active for: " + UserSession.getInstance().getCurrentUser().getName());
 
         // 2. Retrieve active fields from PostgreSQL
         System.out.println("\n[VALIDATION 2] Fetching Active Campus Fields...");
@@ -46,13 +47,16 @@ public class ReservationTest {
         LocalDateTime endSlot = startSlot.plusHours(2);
 
         System.out.println("\n[VALIDATION 3] Submitting Booking Request...");
-        Reservation newBooking = new Reservation(0, selectedFieldId, activeUserId, null, startSlot, endSlot, "PENDING_APPROVAL", "CSE Department Football Match", null);
+        Reservation newBooking = new Reservation(0, selectedFieldId, activeUserId, null, startSlot, endSlot,
+                "PENDING_APPROVAL", "CSE Department Football Match", null);
         boolean created = reservationDAO.createReservation(newBooking);
         System.out.println(" -> Reservation Created: " + created);
 
-        // 4. Test Overlap Prevention (Attempting to book conflicting slot 10:30 AM - 11:30 AM)
+        // 4. Test Overlap Prevention (Attempting to book conflicting slot 10:30 AM -
+        // 11:30 AM)
         System.out.println("\n[VALIDATION 4] Testing Time-Slot Overlap Prevention...");
-        boolean overlapDetected = reservationDAO.hasOverlap(selectedFieldId, startSlot.plusMinutes(30), endSlot.minusMinutes(30));
+        boolean overlapDetected = reservationDAO.hasOverlap(selectedFieldId, startSlot.plusMinutes(30),
+                endSlot.minusMinutes(30));
         System.out.println(" -> Overlap Detected Correctly? " + overlapDetected);
 
         // 5. Fetch all bookings for logged-in user

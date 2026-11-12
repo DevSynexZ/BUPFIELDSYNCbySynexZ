@@ -16,7 +16,7 @@ public class NotificationDAO {
         String sql = "INSERT INTO notifications (user_id, message) VALUES (?, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
             stmt.setString(2, message);
@@ -32,7 +32,7 @@ public class NotificationDAO {
         String sql = "SELECT * FROM notifications WHERE user_id = ? AND is_read = FALSE ORDER BY created_at DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -42,8 +42,7 @@ public class NotificationDAO {
                             rs.getInt("user_id"),
                             rs.getString("message"),
                             rs.getBoolean("is_read"),
-                            rs.getTimestamp("created_at").toLocalDateTime()
-                    ));
+                            rs.getTimestamp("created_at").toLocalDateTime()));
                 }
             }
         } catch (SQLException e) {

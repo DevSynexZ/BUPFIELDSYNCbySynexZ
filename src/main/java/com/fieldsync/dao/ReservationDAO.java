@@ -24,7 +24,8 @@ public class ReservationDAO {
         private final String status;
         private final String purpose;
 
-        public ReservationDisplayDTO(int reservationId, String fieldName, String date, String timeSlot, String status, String purpose) {
+        public ReservationDisplayDTO(int reservationId, String fieldName, String date, String timeSlot, String status,
+                String purpose) {
             this.reservationId = reservationId;
             this.fieldName = fieldName;
             this.date = date;
@@ -33,12 +34,29 @@ public class ReservationDAO {
             this.purpose = purpose;
         }
 
-        public int getReservationId() { return reservationId; }
-        public String getFieldName() { return fieldName; }
-        public String getDate() { return date; }
-        public String getTimeSlot() { return timeSlot; }
-        public String getStatus() { return status; }
-        public String getPurpose() { return purpose; }
+        public int getReservationId() {
+            return reservationId;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public String getDate() {
+            return date;
+        }
+
+        public String getTimeSlot() {
+            return timeSlot;
+        }
+
+        public String getStatus() {
+            return status;
+        }
+
+        public String getPurpose() {
+            return purpose;
+        }
     }
 
     public static class PendingApprovalDTO {
@@ -51,7 +69,8 @@ public class ReservationDAO {
         private final String dateTimeSlot;
         private final String purpose;
 
-        public PendingApprovalDTO(int reservationId, int applicantId, String applicantEmail, String fullName, String department, String fieldName, String dateTimeSlot, String purpose) {
+        public PendingApprovalDTO(int reservationId, int applicantId, String applicantEmail, String fullName,
+                String department, String fieldName, String dateTimeSlot, String purpose) {
             this.reservationId = reservationId;
             this.applicantId = applicantId;
             this.applicantEmail = applicantEmail;
@@ -62,44 +81,68 @@ public class ReservationDAO {
             this.purpose = purpose;
         }
 
-        public int getReservationId() { return reservationId; }
-        public int getApplicantId() { return applicantId; }
-        public String getApplicantEmail() { return applicantEmail; }
-        public String getFullName() { return fullName; }
-        public String getDepartment() { return department; }
-        public String getFieldName() { return fieldName; }
-        public String getDateTimeSlot() { return dateTimeSlot; }
-        public String getPurpose() { return purpose; }
+        public int getReservationId() {
+            return reservationId;
+        }
+
+        public int getApplicantId() {
+            return applicantId;
+        }
+
+        public String getApplicantEmail() {
+            return applicantEmail;
+        }
+
+        public String getFullName() {
+            return fullName;
+        }
+
+        public String getDepartment() {
+            return department;
+        }
+
+        public String getFieldName() {
+            return fieldName;
+        }
+
+        public String getDateTimeSlot() {
+            return dateTimeSlot;
+        }
+
+        public String getPurpose() {
+            return purpose;
+        }
     }
 
     public List<PendingApprovalDTO> getAllPendingReservations() {
         List<PendingApprovalDTO> list = new ArrayList<>();
-        String sql = "SELECT r.reservation_id, r.reserved_by, u.email, u.full_name, u.department, f.field_name, r.start_time, r.end_time, r.purpose " +
-                     "FROM reservations r " +
-                     "JOIN users u ON r.reserved_by = u.user_id " +
-                     "JOIN fields f ON r.field_id = f.field_id " +
-                     "WHERE r.status = 'PENDING_APPROVAL'::reservation_status " +
-                     "ORDER BY r.created_at ASC";
+        String sql = "SELECT r.reservation_id, r.reserved_by, u.email, u.full_name, u.department, f.field_name, r.start_time, r.end_time, r.purpose "
+                +
+                "FROM reservations r " +
+                "JOIN users u ON r.reserved_by = u.user_id " +
+                "JOIN fields f ON r.field_id = f.field_id " +
+                "WHERE r.status = 'PENDING_APPROVAL'::reservation_status " +
+                "ORDER BY r.created_at ASC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
-             ResultSet rs = stmt.executeQuery()) {
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
                 LocalDateTime start = rs.getTimestamp("start_time").toLocalDateTime();
                 LocalDateTime end = rs.getTimestamp("end_time").toLocalDateTime();
-                String slot = start.format(DATE_FORMATTER) + " (" + start.format(TIME_FORMATTER) + " - " + end.format(TIME_FORMATTER) + ")";
+                String slot = start.format(DATE_FORMATTER) + " (" + start.format(TIME_FORMATTER) + " - "
+                        + end.format(TIME_FORMATTER) + ")";
 
                 list.add(new PendingApprovalDTO(
-                    rs.getInt("reservation_id"),
-                    rs.getInt("reserved_by"),
-                    rs.getString("email"),
-                    rs.getString("full_name"),
-                    rs.getString("department"),
-                    rs.getString("field_name"),
-                    slot,
-                    rs.getString("purpose")
-                ));
+                        rs.getInt("reservation_id"),
+                        rs.getInt("reserved_by"),
+                        rs.getString("email"),
+                        rs.getString("full_name"),
+                        rs.getString("department"),
+                        rs.getString("field_name"),
+                        slot,
+                        rs.getString("purpose")));
             }
         } catch (SQLException e) {
             System.err.println("[ReservationDAO] Error fetching pending reservations: " + e.getMessage());
@@ -119,7 +162,7 @@ public class ReservationDAO {
                 + "ORDER BY start_time ASC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, fieldId);
             stmt.setTimestamp(2, Timestamp.valueOf(startOfDay));
@@ -128,7 +171,8 @@ public class ReservationDAO {
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Integer approvedBy = rs.getInt("approved_by");
-                    if (rs.wasNull()) approvedBy = null;
+                    if (rs.wasNull())
+                        approvedBy = null;
 
                     list.add(new Reservation(
                             rs.getInt("reservation_id"),
@@ -154,13 +198,14 @@ public class ReservationDAO {
                 + "FROM reservations WHERE reserved_by = ? ORDER BY start_time DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
                 while (rs.next()) {
                     Integer approvedBy = rs.getInt("approved_by");
-                    if (rs.wasNull()) approvedBy = null;
+                    if (rs.wasNull())
+                        approvedBy = null;
 
                     list.add(new Reservation(
                             rs.getInt("reservation_id"),
@@ -187,7 +232,7 @@ public class ReservationDAO {
                 "  AND (start_time < ? AND end_time > ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, fieldId);
             stmt.setTimestamp(2, Timestamp.valueOf(endTime));
@@ -207,7 +252,7 @@ public class ReservationDAO {
     public boolean updateStatus(int reservationId, String newStatus, int approvedBy) {
         String sql = "UPDATE reservations SET status = ?::reservation_status, approved_by = ?, updated_at = NOW() WHERE reservation_id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, newStatus);
             stmt.setInt(2, approvedBy);
@@ -237,7 +282,8 @@ public class ReservationDAO {
             try (PreparedStatement stmtNotify = conn.prepareStatement(notifySql)) {
                 stmtNotify.setInt(1, userId);
                 stmtNotify.setString(2, "Reservation " + newStatus);
-                stmtNotify.setString(3, "Your request for " + fieldName + " has been " + newStatus.toLowerCase() + " by the Registrar.");
+                stmtNotify.setString(3, "Your request for " + fieldName + " has been " + newStatus.toLowerCase()
+                        + " by the Registrar.");
                 stmtNotify.executeUpdate();
             }
 
@@ -245,13 +291,22 @@ public class ReservationDAO {
             return true;
         } catch (SQLException e) {
             if (conn != null) {
-                try { conn.rollback(); } catch (SQLException ex) { ex.printStackTrace(); }
+                try {
+                    conn.rollback();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
             System.err.println("[ReservationDAO] Error updating reservation status: " + e.getMessage());
             return false;
         } finally {
             if (conn != null) {
-                try { conn.setAutoCommit(true); conn.close(); } catch (SQLException ex) { ex.printStackTrace(); }
+                try {
+                    conn.setAutoCommit(true);
+                    conn.close();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
+                }
             }
         }
     }
@@ -266,7 +321,7 @@ public class ReservationDAO {
                 "VALUES (?, ?, ?, ?, 'PENDING_APPROVAL'::reservation_status, ?)";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, reservation.getFieldId());
             stmt.setInt(2, reservation.getReservedBy());
@@ -290,7 +345,7 @@ public class ReservationDAO {
                 "ORDER BY r.start_time DESC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -316,6 +371,39 @@ public class ReservationDAO {
         return list;
     }
 
+    public List<ReservationDisplayDTO> getAllUpcomingConfirmedMatches() {
+        List<ReservationDisplayDTO> list = new ArrayList<>();
+        String sql = "SELECT r.reservation_id, f.field_name, r.start_time, r.end_time, r.status, r.purpose " +
+                "FROM reservations r " +
+                "JOIN fields f ON r.field_id = f.field_id " +
+                "WHERE r.status = 'CONFIRMED'::reservation_status AND r.start_time >= NOW() " +
+                "ORDER BY r.start_time ASC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql);
+                ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                LocalDateTime start = rs.getTimestamp("start_time").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("end_time").toLocalDateTime();
+
+                String formattedDate = start.format(DATE_FORMATTER);
+                String formattedTimeSlot = start.format(TIME_FORMATTER) + " - " + end.format(TIME_FORMATTER);
+
+                list.add(new ReservationDisplayDTO(
+                        rs.getInt("reservation_id"),
+                        rs.getString("field_name"),
+                        formattedDate,
+                        formattedTimeSlot,
+                        rs.getString("status"),
+                        rs.getString("purpose")));
+            }
+        } catch (SQLException e) {
+            System.err.println("[ReservationDAO] Error fetching all upcoming confirmed matches: " + e.getMessage());
+        }
+        return list;
+    }
+
     public List<ReservationDisplayDTO> getUpcomingConfirmedMatches(int userId) {
         List<ReservationDisplayDTO> list = new ArrayList<>();
         String sql = "SELECT r.reservation_id, f.field_name, r.start_time, r.end_time, r.status, r.purpose " +
@@ -325,7 +413,7 @@ public class ReservationDAO {
                 "ORDER BY r.start_time ASC";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
@@ -357,7 +445,7 @@ public class ReservationDAO {
 
         MatchRoster roster = null;
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement rStmt = conn.prepareStatement(rosterSql)) {
+                PreparedStatement rStmt = conn.prepareStatement(rosterSql)) {
 
             rStmt.setInt(1, reservationId);
             try (ResultSet rs = rStmt.executeQuery()) {
@@ -388,7 +476,8 @@ public class ReservationDAO {
     public boolean saveRoster(int reservationId, String captain, String manager, List<String> players) {
         String upsertRosterSql = "INSERT INTO match_rosters (reservation_id, captain_name, manager_name) " +
                 "VALUES (?, ?, ?) ON CONFLICT (reservation_id) DO UPDATE " +
-                "SET captain_name = EXCLUDED.captain_name, manager_name = EXCLUDED.manager_name, updated_at = CURRENT_TIMESTAMP " +
+                "SET captain_name = EXCLUDED.captain_name, manager_name = EXCLUDED.manager_name, updated_at = CURRENT_TIMESTAMP "
+                +
                 "RETURNING roster_id;";
 
         String deletePlayersSql = "DELETE FROM roster_players WHERE roster_id = ?;";
@@ -434,9 +523,32 @@ public class ReservationDAO {
         }
     }
 
+    // public int getActiveReservationsCount(int userId) {
+    // String sql = "SELECT COUNT(*) FROM reservations WHERE reserved_by = ? AND
+    // status = 'CONFIRMED'::reservation_status";
+    // return executeCountQuery(sql, userId);
+    // }
+
     public int getActiveReservationsCount(int userId) {
-        String sql = "SELECT COUNT(*) FROM reservations WHERE reserved_by = ? AND status = 'CONFIRMED'::reservation_status";
-        return executeCountQuery(sql, userId);
+        // FIXED: Query start_time directly against NOW() to only count upcoming
+        // confirmed matches
+        String sql = "SELECT COUNT(*) FROM reservations WHERE reserved_by = ? AND status = 'CONFIRMED'::reservation_status "
+                +
+                "AND start_time >= NOW()";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, userId);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt(1);
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("[ReservationDAO] Error fetching active reservations count: " + e.getMessage());
+        }
+        return 0;
     }
 
     public int getPendingApprovalsCount(int userId) {
@@ -445,17 +557,22 @@ public class ReservationDAO {
     }
 
     public LocalDateTime getNextMatchTime(int userId) {
+        // FIXED: Query start_time directly against NOW()
         String sql = "SELECT start_time FROM reservations " +
                 "WHERE reserved_by = ? AND status = 'CONFIRMED'::reservation_status AND start_time >= NOW() " +
                 "ORDER BY start_time ASC LIMIT 1";
 
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
+
             try (ResultSet rs = stmt.executeQuery()) {
                 if (rs.next()) {
-                    return rs.getTimestamp("start_time").toLocalDateTime();
+                    Timestamp timestamp = rs.getTimestamp("start_time");
+                    if (timestamp != null) {
+                        return timestamp.toLocalDateTime();
+                    }
                 }
             }
         } catch (SQLException e) {
@@ -466,10 +583,11 @@ public class ReservationDAO {
 
     private int executeCountQuery(String sql, int userId) {
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+                PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setInt(1, userId);
             try (ResultSet rs = stmt.executeQuery()) {
-                if (rs.next()) return rs.getInt(1);
+                if (rs.next())
+                    return rs.getInt(1);
             }
         } catch (SQLException e) {
             System.err.println("[ReservationDAO] Error executing count query: " + e.getMessage());

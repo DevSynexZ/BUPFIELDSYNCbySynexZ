@@ -89,9 +89,10 @@ public class ManageRosterDialog {
 
         Button btnSave = new Button("Save Roster");
         btnSave.setMaxWidth(Double.MAX_VALUE);
-        btnSave.setStyle("-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-cursor: hand;");
+        btnSave.setStyle(
+                "-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-weight: bold; -fx-padding: 10 20; -fx-cursor: hand;");
 
-        final boolean[] result = {false};
+        final boolean[] result = { false };
 
         btnSave.setOnAction(e -> {
             List<String> players = new ArrayList<>();
