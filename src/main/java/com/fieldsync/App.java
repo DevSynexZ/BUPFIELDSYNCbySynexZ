@@ -3,10 +3,15 @@ package com.fieldsync;
 import com.fieldsync.config.AppConfig;
 import com.fieldsync.database.DatabaseInitializer;
 import com.fieldsync.navigation.SceneManager;
+
+import io.github.cdimascio.dotenv.Dotenv;
 import javafx.application.Application;
 import javafx.stage.Stage;
 
 public class App extends Application {
+
+    Dotenv dotenv = Dotenv.load();
+    String dbUrl = dotenv.get("DB_URL");
 
     @Override
     public void start(Stage primaryStage) {
