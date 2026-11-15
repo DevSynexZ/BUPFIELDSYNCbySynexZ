@@ -31,8 +31,12 @@
                     <Insets top="24" right="24" bottom="24" left="24" />
                 </padding>
 
-                <Label text="CAMPUS REGISTRAR DASHBOARD" styleClass="card-title"
-                    style="-fx-font-size: 22px;" />
+                <HBox alignment="CENTER_LEFT" spacing="15">
+                    <Label text="CAMPUS REGISTRAR DASHBOARD" styleClass="card-title"
+                        style="-fx-font-size: 22px;" />
+                    <Label fx:id="lblDateRange" text=""
+                        style="-fx-text-fill: #94a3b8; -fx-font-size: 13px; -fx-font-weight: bold;" />
+                </HBox>
 
                 <GridPane hgap="16" vgap="16">
                     <columnConstraints>
@@ -40,12 +44,12 @@
                         <ColumnConstraints percentWidth="50" />
                     </columnConstraints>
 
-                    <!-- Usage Trend Chart -->
+                    <!-- Usage Trend Bar Chart -->
                     <VBox styleClass="bento-card" GridPane.columnIndex="0" GridPane.rowIndex="0">
-                        <Label text="WEEKLY FIELD USAGE" styleClass="card-title" />
-                        <BarChart fx:id="chartUsage" prefHeight="220">
+                        <Label fx:id="lblWeeklyUsageTitle" text="WEEKLY FIELD USAGE" styleClass="card-title" />
+                        <BarChart fx:id="chartUsage" prefHeight="240">
                             <xAxis>
-                                <CategoryAxis label="Day" />
+                                <CategoryAxis fx:id="axisXDays" label="Date" />
                             </xAxis>
                             <yAxis>
                                 <NumberAxis label="Hours Reserved" />
@@ -53,10 +57,15 @@
                         </BarChart>
                     </VBox>
 
-                    <!-- Department Distribution Chart -->
-                    <VBox styleClass="bento-card" GridPane.columnIndex="1" GridPane.rowIndex="0">
-                        <Label text="DEPARTMENT ALLOCATION" styleClass="card-title" />
-                        <PieChart fx:id="chartDepartment" prefHeight="220" />
+                    <!-- Department Allocation Table -->
+                    <VBox styleClass="bento-card" GridPane.columnIndex="1" GridPane.rowIndex="0" spacing="10">
+                        <Label fx:id="lblDeptAllocationTitle" text="DEPARTMENT ALLOCATION (Past 7 Days)" styleClass="card-title" />
+                        <TableView fx:id="tblDepartmentAllocation" prefHeight="240">
+                            <columns>
+                                <TableColumn fx:id="colDeptName" text="Department" prefWidth="220" />
+                                <TableColumn fx:id="colDeptConfirmedCount" text="Confirmed Bookings" prefWidth="180" />
+                            </columns>
+                        </TableView>
                     </VBox>
 
                     <!-- Pending Approvals Queue -->

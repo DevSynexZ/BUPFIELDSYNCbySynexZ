@@ -19,6 +19,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
 
 public class UserRepDashboardController {
 
@@ -46,6 +47,7 @@ public class UserRepDashboardController {
     private TableColumn<ReservationDisplayDTO, String> colStatus;
     @FXML
     private TableColumn<ReservationDisplayDTO, Void> colRoster;
+    @FXML private TableColumn<ReservationDisplayDTO,Void> colDelete;
 
     private final ReservationDAO reservationDAO = new ReservationDAO();
 
@@ -95,6 +97,49 @@ public class UserRepDashboardController {
                                 "-fx-background-color: #6366f1; -fx-text-fill: white; -fx-font-size: 11px; -fx-font-weight: bold; -fx-cursor: hand;");
                     }
                     setGraphic(btnRoster);
+                }
+            }
+        });
+
+        // Delete / Cancel Button Column Setup
+        colDelete.setCellFactory(param -> new TableCell<>() {
+            private final Button btnDelete = new Button("Cancel");
+
+            {
+                btnDelete.setOnAction(e -> {
+                    ReservationDisplayDTO item = getTableView().getItems().get(getIndex());
+                    if (item != null) {
+                        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+                        alert.setTitle("Cancel Reservation");
+                        alert.setHeaderText("Delete/Cancel Reservation");
+                        alert.setContentText("Are you sure you want to cancel the reservation for " + item.getPurpose() + "?");
+
+                        Optional<ButtonType> result = alert.showAndWait();
+                        if (result.isPresent() && result.get() == ButtonType.OK) {
+                            boolean success = reservationDAO.deleteReservation(item.getReservationId());
+                            if (success) {
+                                loadDashboardData();
+                            } else {
+                                Alert errAlert = new Alert(Alert.AlertType.ERROR);
+                                errAlert.setTitle("Error");
+                                errAlert.setHeaderText("Could not cancel reservation");
+                                errAlert.setContentText("Database operation failed.");
+                                errAlert.showAndWait();
+                            }
+                        }
+                    }
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    btnDelete.setStyle(
+                            "-fx-background-color: #ef4444; -fx-text-fill: white; -fx-font-size: 11px; -fx-font-weight: bold; -fx-cursor: hand;");
+                    setGraphic(btnDelete);
                 }
             }
         });

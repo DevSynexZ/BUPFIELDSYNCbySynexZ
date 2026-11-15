@@ -114,6 +114,36 @@ public class ReservationDAO {
         }
     }
 
+    
+    public static class WeeklyUsageDTO {
+        private final String dayLabel;
+        private final double totalHours;
+
+        public WeeklyUsageDTO(String dayLabel, double totalHours) {
+            this.dayLabel = dayLabel;
+            this.totalHours = totalHours;
+        }
+
+        public String getDayLabel() { return dayLabel; }
+        public double getTotalHours() { return totalHours; }
+    }
+
+    public static class DepartmentAllocationDTO {
+        private final String department;
+        private final int confirmedCount;
+
+        public DepartmentAllocationDTO(String department, int confirmedCount) {
+            this.department = department;
+            this.confirmedCount = confirmedCount;
+        }
+
+        public String getDepartment() { return department; }
+        public int getConfirmedCount() { return confirmedCount; }
+    }
+
+
+
+
     public List<PendingApprovalDTO> getAllPendingReservations() {
         List<PendingApprovalDTO> list = new ArrayList<>();
         String sql = "SELECT r.reservation_id, r.reserved_by, u.email, u.full_name, u.department, f.field_name, r.start_time, r.end_time, r.purpose "
@@ -264,6 +294,19 @@ public class ReservationDAO {
         }
     }
 
+    public boolean deleteReservation(int reservationId) {
+        String sql = "DELETE FROM reservations WHERE reservation_id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, reservationId);
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            System.err.println("[ReservationDAO] Error deleting reservation: " + e.getMessage());
+            return false;
+        }
+    }
+
     public boolean updateReservationStatus(int reservationId, int userId, String newStatus, String fieldName) {
         String updateSql = "UPDATE reservations SET status = ?::reservation_status, updated_at = NOW() WHERE reservation_id = ?";
         String notifySql = "INSERT INTO notifications (user_id, title, message) VALUES (?, ?, ?)";
@@ -310,6 +353,8 @@ public class ReservationDAO {
             }
         }
     }
+
+
 
     public boolean createReservation(Reservation reservation) {
         if (hasOverlap(reservation.getFieldId(), reservation.getStartTime(), reservation.getEndTime())) {
@@ -438,6 +483,80 @@ public class ReservationDAO {
         }
         return list;
     }
+
+    public List<WeeklyUsageDTO> getWeeklyUsageStats() {
+        List<WeeklyUsageDTO> list = new ArrayList<>();
+        // Query confirmed reservations starting within the past 7 days up to now
+        String sql = "SELECT start_time, end_time FROM reservations " +
+                     "WHERE status = 'CONFIRMED'::reservation_status " +
+                     "  AND start_time >= NOW() - INTERVAL '7 days' " +
+                     "  AND start_time <= NOW()";
+
+        // We can aggregate per day in Java or SQL. Let's pull the timestamps:
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            // Map dates (Formatted as dd-MM-yy or similar) to total hours
+            java.util.Map<String, Double> dayHoursMap = new java.util.LinkedHashMap<>();
+            DateTimeFormatter labelFormatter = DateTimeFormatter.ofPattern("dd-MM-yy");
+
+            // Initialize past 7 days with 0.0 hours
+            LocalDate today = LocalDate.now();
+            for (int i = 6; i >= 0; i--) {
+                LocalDate d = today.minusDays(i);
+                dayHoursMap.put(d.format(labelFormatter), 0.0);
+            }
+
+            while (rs.next()) {
+                LocalDateTime start = rs.getTimestamp("start_time").toLocalDateTime();
+                LocalDateTime end = rs.getTimestamp("end_time").toLocalDateTime();
+                double hours = java.time.Duration.between(start, end).toMinutes() / 60.0;
+
+                String dateKey = start.format(labelFormatter);
+                if (dayHoursMap.containsKey(dateKey)) {
+                    dayHoursMap.put(dateKey, dayHoursMap.get(dateKey) + hours);
+                }
+            }
+
+            for (java.util.Map.Entry<String, Double> entry : dayHoursMap.entrySet()) {
+                list.add(new WeeklyUsageDTO(entry.getKey(), entry.getValue()));
+            }
+
+        } catch (SQLException e) {
+            System.err.println("[ReservationDAO] Error fetching weekly usage stats: " + e.getMessage());
+        }
+        return list;
+    }
+
+    public List<DepartmentAllocationDTO> getDepartmentAllocations() {
+        List<DepartmentAllocationDTO> list = new ArrayList<>();
+        String sql = "SELECT u.department, COUNT(r.reservation_id) AS confirmed_count " +
+                     "FROM reservations r " +
+                     "JOIN users u ON r.reserved_by = u.user_id " +
+                     "WHERE r.status = 'CONFIRMED'::reservation_status " +
+                     "  AND r.start_time >= NOW() - INTERVAL '7 days' " +
+                     "GROUP BY u.department " +
+                     "ORDER BY confirmed_count DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql);
+             ResultSet rs = stmt.executeQuery()) {
+
+            while (rs.next()) {
+                String dept = rs.getString("department");
+                if (dept == null || dept.trim().isEmpty()) {
+                    dept = "General / Unassigned";
+                }
+                int count = rs.getInt("confirmed_count");
+                list.add(new DepartmentAllocationDTO(dept, count));
+            }
+        } catch (SQLException e) {
+            System.err.println("[ReservationDAO] Error fetching department allocations: " + e.getMessage());
+        }
+        return list;
+    }
+    
 
     public MatchRoster getRosterByReservationId(int reservationId) {
         String rosterSql = "SELECT roster_id, captain_name, manager_name FROM match_rosters WHERE reservation_id = ?";

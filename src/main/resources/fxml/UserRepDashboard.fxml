@@ -24,7 +24,7 @@
                 style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #6c5ce7;" />
             <Region VBox.vgrow="ALWAYS" />
             <Button text="🏠" styleClass="nav-icon-btn, nav-icon-btn-active" />
-            <Button text="⚽" styleClass="nav-icon-btn" onAction="#handleFieldsTab" />
+            <!-- <Button text="⚽" styleClass="nav-icon-btn" onAction="#handleFieldsTab" /> -->
             <Button text="📅" styleClass="nav-icon-btn" onAction="#handleCalendarTab" />
             <Region VBox.vgrow="ALWAYS" />
             <Button text="🚪" styleClass="nav-icon-btn" onAction="#handleLogout" />
@@ -88,7 +88,8 @@
                                 <TableColumn fx:id="colPurpose" text="Purpose / Match"
                                     prefWidth="160" />
                                 <TableColumn fx:id="colStatus" text="Status" prefWidth="110" />
-                                <TableColumn fx:id="colRoster" text="Action" prefWidth="110" />
+                                <TableColumn fx:id="colRoster" text="Roster" prefWidth="90" />
+                                <TableColumn fx:id="colDelete" text="Manage" prefWidth="90" />
                             </columns>
                         </TableView>
                     </VBox>
